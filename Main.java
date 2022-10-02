@@ -9,6 +9,8 @@ public class Main {
 	    linkedL.addLast(56);
 	    linkedL.addLast(30);
 	    linkedL.addLast(70);
+
+	    linkedL.display();
 	  }
 
 	}
