@@ -1,80 +1,106 @@
 package com.java.day14.llist;
 import java.util.ArrayList;
 
-public class LinkedLists<E> {
+public class LinkedLists<T> {
 
-  Node<E> head;
+	Node<T> head;
 
-  public void addFirst(E item) {
-    Node<E> newNode = new Node<>(item);
+	public void addLast(T item) {
+		Node<T> newNode = new Node<>(item);
+		if (head == null)
+			head = newNode;
+		else if (head.next == null)
+			head.next = newNode;
+		else {
+			Node<T> temp = head;
+			while (temp.next != null)
+				temp = temp.next;
+			temp.next = newNode;
+		}
+	}
 
-    if (head == null) head = newNode;//list is empty condition
-    else {
-      newNode.next = head;
-      head = newNode;
-    }
-  }
+	private boolean isEmpty() {
+		if (head == null)
+			return true;
+		return false;
+	}
 
-  public void addLast(E item) {
-    Node<E> newNode = new Node<>(item);
+	public void addFirst(T item) {
+		Node<T> newNode = new Node<>(item);
 
-    if (head == null) head = newNode;//node being added is the first node
-    else if (head.next == null) head.next = newNode;  //node being added is the second node
-    else {
-      Node<E> temp = head;
-      while (temp.next != null) temp = temp.next; //traverse to the last node
-      temp.next = newNode;
-    }
-  }
+		if (head == null)
+			head = newNode;
+		else {
+			newNode.next = head;
+			head = newNode;
+		}
+	}
 
-  public void display() {
-    if (isEmpty()) {
-      System.out.println("list empty! nothing to display");
-      return;
-    }
+	public void display() {
+		if (isEmpty()) {
+			System.out.println("list is empty! ");
+			return;
+		}
 
-    Node<E> temp = head;
-    while (temp.next != null) {
-      System.out.print(temp.data + " -> ");
-      temp = temp.next;
-    }
-    System.out.println(temp.data);
-  }
+		Node<T> temp = head;
+		while (temp.next != null) {
+			System.out.print(temp.data + " -> ");
+			temp = temp.next;
+		}
+		System.out.println(temp.data);
+	}
 
-  public void displayFromEnd() {
-    if (isEmpty()) {
-      System.out.println("list empty! nothing to display");
-      return;
-    }
+	public void displayFromEnd() {
+		if (isEmpty()) {
+			System.out.println("list is empty! ");
+			return;
+		}
 
-    ArrayList<E> nodes = new ArrayList<>(); //creating an empty ArrayList, to the node elements.
-    Node<E> temp = head;
-    
-    while (temp.next != null) {
-        nodes.add(temp.data); //adding nodes to arraylist till current node's next points to null
-        temp = temp.next;
-      }
-    nodes.add(temp.data); //adding last node to arraylist
+		ArrayList<T> nodes = new ArrayList<>();
+		Node<T> temp = head;
 
-    for (int i = nodes.size() - 1; i > 0; i--) {
-      System.out.print(nodes.get(i) + " -> ");
-    }
-    System.out.println(nodes.get(0));
-  }
+		while (temp.next != null) {
+			nodes.add(temp.data);
+			temp = temp.next;
+		}
+		nodes.add(temp.data);
 
-  private boolean isEmpty() {
-    if (head == null) return true;
-    else return false;
-  }
+		for (int i = nodes.size() - 1; i > 0; i--) {
+			System.out.print(nodes.get(i) + " -> ");
+		}
+		System.out.println(nodes.get(0));
+	}
 
+	public void insertAt(int index, T item) {
+		int count = 0;
+		if (index < 1 || index > count + 1) {
+			System.out.println("invalid index" + (count + 1));
+			return;
+		} else if (index == 1) {
+			if (head == null)
+				System.out.println("list empty! adding " + item + " at index 1.");
+			addFirst(item);
+		} else if (index == count + 1)
+			addLast(item);
+		else {
+			Node<T> newNode = new Node<>(item);
+			Node<T> temp = head;
+
+			for (int i = 1; i < index - 1; i++)
+				temp = temp.next;
+			newNode.next = temp.next;
+			temp.next = newNode;
+			count++;
+		}
+	}
 }
 
-class Node<E> {
+class Node<T> {
 
-  E data;
-  Node<E> next;
+	T data;
+	Node<T> next;
 
-  Node(E data) {
-    this.data = data;
-  }
+	Node(T data) {
+		this.data = data;
+	}
 }
