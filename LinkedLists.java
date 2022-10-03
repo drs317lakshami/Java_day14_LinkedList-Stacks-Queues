@@ -1,10 +1,10 @@
 package com.java.day14.llist;
+
 import java.util.ArrayList;
 
 public class LinkedLists<E> {
 
   Node<E> head;
-private int count;
 
   public void addFirst(E item) {
     Node<E> newNode = new Node<>(item);
@@ -29,7 +29,8 @@ private int count;
   }
 
   public void insertAt(int index, E item) {
-    if (index < 1 || index > count + 1) {
+    int count = 0;
+	if (index < 1 || index > count + 1) {
       System.out.println("invalid index. enter between 1 and " + (count + 1));
       return;
     } else if (index == 1) {
@@ -111,7 +112,8 @@ private int count;
       System.out.println("list empty! cant add after " + nodeToFind);
     } else {
       Node<E> temp = head;
-      for (int i = 1; i <= count; i++) {    //looping until we find the given node.
+      int count = 0;
+	for (int i = 1; i <= count; i++) {    //looping until we find the given node.
         if (temp.data == nodeToFind) {
           System.out.println(nodeToFind + " found at index " + i);
           return;
@@ -119,6 +121,27 @@ private int count;
         temp = temp.next;
       }
       System.out.println("we couldnt find " + nodeToFind + " in the list.");    //when looped till the end and couldn't find the node
+    }
+  }
+
+  public void addNodeAfter(E prevNode, E nodeToAdd) {
+    if (isEmpty()) {
+      System.out.println("list empty! cant add after " + prevNode);
+    } else {
+      Node<E> temp = head;
+
+      int count = 0;
+	for (int i = 1; i <= count; i++) {    //looping until we find the node to add after.
+        if (temp.data == prevNode) {
+          Node<E> newNode = new Node<>(nodeToAdd);
+          newNode.next = temp.next;
+          temp.next = newNode;
+          System.out.println(prevNode + " found at index " + i + ". added " + nodeToAdd + " at index " + (i + 1));
+          return;
+        }
+        temp = temp.next;
+      }
+      System.out.println("we couldnt find " + prevNode + " in the list. perhaps try a different node"); //when looped till the end and didnt find the node
     }
   }
 
