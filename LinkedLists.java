@@ -1,135 +1,140 @@
 package com.java.day14.llist;
 import java.util.ArrayList;
 
-public class LinkedLists<T> {
+public class LinkedLists<E> {
 
-	Node<T> head;
+  Node<E> head;
+private int count;
 
-	public void addLast(T item) {
-		Node<T> newNode = new Node<>(item);
-		if (head == null)
-			head = newNode;
-		else if (head.next == null)
-			head.next = newNode;
-		else {
-			Node<T> temp = head;
-			while (temp.next != null)
-				temp = temp.next;
-			temp.next = newNode;
-		}
-	}
+  public void addFirst(E item) {
+    Node<E> newNode = new Node<>(item);
 
-	private boolean isEmpty() {
-		if (head == null)
-			return true;
-		return false;
-	}
+    if (head == null) head = newNode;//list is empty condition
+    else {
+      newNode.next = head;
+      head = newNode;
+    }
+  }
 
-	public void addFirst(T item) {
-		Node<T> newNode = new Node<>(item);
+  public void addLast(E item) {
+    Node<E> newNode = new Node<>(item);
 
-		if (head == null)
-			head = newNode;
-		else {
-			newNode.next = head;
-			head = newNode;
-		}
-	}
+    if (head == null) head = newNode;//node being added is the first node
+    else if (head.next == null) head.next = newNode;  //node being added is the second node
+    else {
+      Node<E> temp = head;
+      while (temp.next != null) temp = temp.next; //traverse to the last node
+      temp.next = newNode;
+    }
+  }
 
-	public void display() {
-		if (isEmpty()) {
-			System.out.println("list is empty! ");
-			return;
-		}
+  public void insertAt(int index, E item) {
+    if (index < 1 || index > count + 1) {
+      System.out.println("invalid index. enter between 1 and " + (count + 1));
+      return;
+    } else if (index == 1) {
+      if (head == null) System.out.println("list empty! adding " + item + " at index 1.");
+      addFirst(item);
+    } else if (index == count + 1) addLast(item);
+    else {
+      Node<E> newNode = new Node<>(item);
+      Node<E> temp = head;
 
-		Node<T> temp = head;
-		while (temp.next != null) {
-			System.out.print(temp.data + " -> ");
-			temp = temp.next;
-		}
-		System.out.println(temp.data);
-	}
+      for (int i = 1; i < index - 1; i++) temp = temp.next;
+      newNode.next = temp.next;
+      temp.next = newNode;
+      count++;
+    }
+  }
 
-	public void displayFromEnd() {
-		if (isEmpty()) {
-			System.out.println("list is empty! ");
-			return;
-		}
+  public void display() {
+    if (isEmpty()) {
+      System.out.println("list empty! nothing to display");
+      return;
+    }
 
-		ArrayList<T> nodes = new ArrayList<>();
-		Node<T> temp = head;
+    Node<E> temp = head;
+    while (temp.next != null) {
+      System.out.print(temp.data + " -> ");
+      temp = temp.next;
+    }
+    System.out.println(temp.data);
+  }
 
-		while (temp.next != null) {
-			nodes.add(temp.data);
-			temp = temp.next;
-		}
-		nodes.add(temp.data);
+  public void displayFromEnd() {
+    if (isEmpty()) {
+      System.out.println("list empty! nothing to display");
+      return;
+    }
 
-		for (int i = nodes.size() - 1; i > 0; i--) {
-			System.out.print(nodes.get(i) + " -> ");
-		}
-		System.out.println(nodes.get(0));
-	}
+    ArrayList<E> nodes = new ArrayList<>(); //creating an empty ArrayList, to the node elements.
+    Node<E> temp = head;
+    
+    while (temp.next != null) {
+        nodes.add(temp.data); //adding nodes to arraylist till current node's next points to null
+        temp = temp.next;
+      }
+    nodes.add(temp.data); //adding last node to arraylist
 
-	public void insertAt(int index, T item) {
-		int count = 0;
-		if (index < 1 || index > count + 1) {
-			System.out.println("invalid index" + (count ));
-			return;
-		} else if (index == 1) {
-			if (head == null)
-				System.out.println("list empty! adding " + item + " at index 1.");
-			addFirst(item);
-		} else if (index == count + 1)
-			addLast(item);
-		else {
-			Node<T> newNode = new Node<>(item);
-			Node<T> temp = head;
+    for (int i = nodes.size() - 1; i > 0; i--) {
+      System.out.print(nodes.get(i) + " -> ");
+    }
+    System.out.println(nodes.get(0));
+  }
 
-			for (int i = 1; i < index - 1; i++)
-				temp = temp.next;
-			newNode.next = temp.next;
-			temp.next = newNode;
-			count++;
-		}
-	}
+  public void pop() {
+    if (head == null) {
+      System.out.println("list empty! nothing to delete");
+      return;
+    } else head = head.next;
+  }
 
-	public void deleteFirst() {
-		if (head == null) {
-			System.out.println("list is empty!");
-			return;
-		} else
-			head = head.next;
-	}
-	
-	public void pop() {
-	    if (head == null) {
-	      System.out.println("list is empty!");
-	      return;
-	    } else head = head.next;
-	  }
+  public void popLast() {
+    if (head == null) {
+      System.out.println("list empty! nothing to delete");
+      return;
+    } else if (head.next == null) {
+      System.out.println("deleted " + head.data);
+      head = head.next;
+    }
+    else {
+      Node<E> temp = head;
 
-	  public void popLast() {
-	    if (head == null) {
-	      System.out.println("list is empty!");
-	      return;
-	    } else if (head.next == null) head = head.next;
-	    else {
-	      Node<T> temp = head;
+      while (temp.next.next != null) temp = temp.next;
+      System.out.println("deleted " + temp.next.data);
+      temp.next = null;
+    }
+  }
 
-	      while (temp.next.next != null) temp = temp.next;
-	      System.out.println("deleted " + temp.next.data);
-	      temp.next = null;
-	    }
-	  }
+  public void findNode(E nodeToFind) {
+    if (isEmpty()) {
+      System.out.println("list empty! cant add after " + nodeToFind);
+    } else {
+      Node<E> temp = head;
+      for (int i = 1; i <= count; i++) {    //looping until we find the given node.
+        if (temp.data == nodeToFind) {
+          System.out.println(nodeToFind + " found at index " + i);
+          return;
+        }
+        temp = temp.next;
+      }
+      System.out.println("we couldnt find " + nodeToFind + " in the list.");    //when looped till the end and couldn't find the node
+    }
+  }
+
+  private boolean isEmpty() {
+    if (head == null) return true;
+    else return false;
+  }
+
 }
 
-class Node<T> {
+class Node<E> {
 
-	T data;
-	Node<T> next;
+  E data;
+  Node<E> next;
 
-	Node(T data) {
-		this.data = data;
-	}
+  Node(E data) {
+    this.data = data;
+  }
 }
